@@ -14,7 +14,7 @@ CREATE TABLE "canciones" (
     "id" SERIAL NOT NULL,
     "nombre_cancion" TEXT NOT NULL,
     "nombre_artista" TEXT NOT NULL,
-    "imagen" TEXT NOT NULL,
+    "imagen" TEXT,
     "usuario_id" INTEGER NOT NULL,
 
     CONSTRAINT "canciones_pkey" PRIMARY KEY ("id")
