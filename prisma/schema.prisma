@@ -16,7 +16,7 @@ model Usuarios {
   nombre             String
   apellido           String
   correo             String              @unique
-  password           String 
+  // password           String 
   @@map("usuarios")
   canciones Canciones[]
 }
@@ -25,7 +25,6 @@ model Canciones {
   id    Int        @id @default(autoincrement()) 
   nombreCancion String @map("nombre_cancion")
   nombreArtista String @map("nombre_artista")
-  imagenArtista String? @map("imagen")
   usuarioId Int @map("usuario_id") 
   // fields > indica las columnas que vamos a utilizar para crear la relacion
   // references > la columna de la tabla que voy a crear la relacion
@@ -33,4 +32,3 @@ model Canciones {
 
   @@map("canciones")
 }
-

@@ -11,7 +11,6 @@ export const crearCancion = async (req, res) => {
       content: error.details,
     });
   }
-  console.log(value);
   try {
     const crearCancion = await conexion.canciones.create({
       data: {
@@ -30,9 +29,63 @@ export const crearCancion = async (req, res) => {
     }
 }
 export const devolverCancion = async (req, res) => {
-  const categorias = await conexion.canciones.findMany()
+  const canciones = await conexion.canciones.findMany()
 
   res.json({
-    content: categorias,
+    content: canciones,
   })
 }
+export const devolverCancionId = async (req, res) => {
+  const { id } = req.params;
+  const canciones = await conexion.canciones.findMany(
+   {where : { id:parseInt(id)}}
+  )
+
+  res.json({
+    content: canciones,
+  })
+}
+
+export const borrarCancion = async (req, res) => {
+  const { id } = req.params;
+  const canciones = await conexion.canciones.delete({
+    where: { id: parseInt(id) }}
+  )
+
+  res.json({
+    content: "Cancion eliminada exitosamente"
+  })
+}
+
+export const actualizarCancion = async (req, res) => {
+  const { error, value } = CancionDto.validate(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: "Error al crear la canción",
+      content: error.details,
+    });
+  }
+
+  const { id } = req.params;
+
+  try {
+    // Corrige la estructura del objeto dentro de data
+    const canciones = await conexion.canciones.update({
+      data: {
+        nombreCancion: value.nombreCancion,
+        nombreArtista: value.nombreArtista,
+        usuarioId: value.usuarioId
+      },
+      where: { id: parseInt(id) },
+    });
+
+    res.json({
+      content: "Canción actualizada exitosamente",
+    });
+  } catch (error) {
+    console.error("Error al actualizar la canción:", error);
+    res.status(500).json({
+      message: "Error interno del servidor al actualizar la canción",
+    });
+  }
+};

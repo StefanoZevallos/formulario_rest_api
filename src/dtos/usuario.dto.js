@@ -16,15 +16,15 @@ export const registroUsuarioDto = Joi.object({
   // {} > cuantificador (longitud de la cadena de texto)
   // $ > cierra la expresion regular
 
-  password: Joi.string()
-    .regex(
-      new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$")
-    )
-    .messages({
-      "string.pattern.base":
-        "El password debe contener al menos una mayuscula, una minuscula, un numero, un caracter especial y no ser menor a 6 caracteres",
-    })
-    .required(),
+  // password: Joi.string()
+  //   .regex(
+  //     new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$")
+  //   )
+  //   .messages({
+  //     "string.pattern.base":
+  //       "El password debe contener al menos una mayuscula, una minuscula, un numero, un caracter especial y no ser menor a 6 caracteres",
+  //   })
+  //   .required(),
 });
 
 // la password no es necesario usar el patron porque si el usuario ya esta creado, y su contrasena no utilizo el patron no le podemos obligar ahora a que utilice una contrasena segura ya que ya tiene contrasena

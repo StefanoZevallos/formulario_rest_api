@@ -37,7 +37,7 @@ servidor.use(cancionRouter);
   //   });
   // })
 
-  servidor.listen(3001, () => {
-    console.log(`Servidor corriendo exitosamente en el puerto 3001`);
+  servidor.listen(3000, () => {
+    console.log(`Servidor corriendo exitosamente en el puerto 3000`);
   });
 
