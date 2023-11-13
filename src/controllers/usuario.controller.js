@@ -1,37 +1,88 @@
 import { conexion } from "../conexion.js";
-import { registroUsuarioDto, loginDto } from "../dtos/usuario.dto.js";
+import { registroUsuarioDto, loginDto, editarUsuarioDto } from "../dtos/usuario.dto.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registroController = async (req, res) => {
   const { error, value } = registroUsuarioDto.validate(req.body);
-
   if (error) {
     return res.status(400).json({
       message: "error al crear el usuario",
       content: error.details,
     });
   }
-
   // genera el hash a raiz de la password y el numero de vueltas para generar el salt
-  const hashPassword = await bcrypt.hash(value.password, 8);
-
+  // const hashPassword = await bcrypt.hash(value.password, 8);
+  try {
   const usuarioCreado = await conexion.usuarios.create({
     data: {
       ...value,
-      password: hashPassword, // remplazamos la contrasena por el hash creado de esa contrasena
+      // password: hashPassword, // remplazamos la contrasena por el hash creado de esa contrasena
     },
   });
-
   return res.status(201).json({
     message: "usuario creado exitosamente",
     content: usuarioCreado,
-  });
+  })}
+  catch {
+    return res.status(500).json({ message: 'Error interno del servidor', content: null });
+  }
 };
+
+export const editController = async (req, res) => {
+  const { id } = req.params; // Suponiendo que el id está presente en los parámetros de la solicitud
+  const { error, value } = editarUsuarioDto.validate(req.body);
+  if (error) {
+    return res.status(400).json({
+      message: "Error al editar el usuario",
+      content: error.details,
+    });
+  }
+  try {
+    // Verifica si el usuario existe antes de intentar editarlo
+    const usuarioExistente = await conexion.usuarios.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!usuarioExistente) {
+      return res.status(404).json({
+        message: "Usuario no encontrado",
+        content: null,
+      });
+    }
+    const usuarioEditado = await conexion.usuarios.update({
+      where: { id: parseInt(id) },
+      data: {
+        ...value,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Usuario editado exitosamente",
+      content: usuarioEditado,
+    });
+  } catch (error) {
+    console.error("Error al editar el usuario:", error);
+    return res.status(500).json({
+      message: "Error interno del servidor",
+      content: null,
+    });
+  }
+};
+
+export const eliminarUsuarioController = async (req, res) => {
+  const { id } = req.params;
+  const usuario = await conexion.usuarios.delete({
+    where: { id: parseInt(id) }}
+  )
+  res.json({
+    content: "Usuario eliminado exitosamente"
+  })
+};
+
 
 export const loginController = async (req, res) => {
   const { error, value } = loginDto.validate(req.body);
-
   if (error) {
     return res.status(400).json({
       message: "Error al hacer el login",

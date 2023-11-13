@@ -14,8 +14,8 @@ model Usuarios {
   // PK  // indicar que trabajaremos con UUID  // indicar un valor por defecto
   id                 Int             @id @default(autoincrement()) 
   nombre             String
-  apellido           String
   correo             String              @unique
+  telefono            String
   // password           String 
   @@map("usuarios")
   canciones Canciones[]

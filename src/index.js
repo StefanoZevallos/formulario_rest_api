@@ -13,31 +13,7 @@ servidor.use(express.json())
 servidor.use(usuarioRouter);
 servidor.use(cancionRouter);
 
-  // servidor
-  // .route("/canciones")
-  // .post(async (req, res) => {
-  //   const { body: data } = req;
-  //   try {
-  //     const resultado = await conexion.canciones.create({
-  //       data
-  //     });
-  //     console.log(resultado);
-  //     res.json({
-  //       message: "Canción creado exitosamente",
-  //     });
-  //   } catch (error) {
-  //     res.json({
-  //       message: "Error al crear la canción",
-  //     });
-  //   }
-  // }).get(async (req,res)=> {
-  //   const resultado = await conexion.canciones.findMany();
-  //   res.json({
-  //     content: resultado,
-  //   });
-  // })
-
-  servidor.listen(3000, () => {
-    console.log(`Servidor corriendo exitosamente en el puerto 3000`);
-  });
+servidor.listen(3000, () => {
+  console.log(`Servidor corriendo exitosamente en el puerto 3000`);
+});
 
