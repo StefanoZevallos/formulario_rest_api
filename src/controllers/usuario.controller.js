@@ -3,6 +3,49 @@ import { registroUsuarioDto, loginDto, editarUsuarioDto } from "../dtos/usuario.
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+export const getUsuariosController = async (req, res) => {
+  try {
+    const usuarios = await conexion.usuarios.findMany(); // Asumiendo que `usuarios` es el nombre de tu tabla de usuarios
+    return res.status(200).json({
+      content: usuarios,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Error interno del servidor',
+      content: null,
+    });
+  }
+};
+
+export const getUsuarioController = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const usuario = await conexion.usuarios.findUnique({
+      where: {
+        id: parseInt(id), // Asumiendo que el ID es un número, conviértelo si es necesario
+      },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado',
+        content: null,
+      });
+    }
+
+    return res.status(200).json({
+      content: usuario,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Error interno del servidor',
+      content: null,
+    });
+  }
+};
 export const registroController = async (req, res) => {
   const { error, value } = registroUsuarioDto.validate(req.body);
   if (error) {
